@@ -99,12 +99,11 @@
           documentation, so go do that if you haven't already!</p>
           <p>Next, I set up a new frontend action. I cloned down llvm
           into the <code>~/clang-llvm</code> folder:</p>
-          <p>{% highlight bash %} cd ~/clang-llvm/llvm/tools/clang mkdir
-          tools/extra/commentparser echo
-          'add_subdirectory(commentparser)' &gt;&gt;
-          tools/extra/CMakeLists.txt vim
-          tools/extra/commentparser/CMakeLists.txt {% endhighlight
-          %}</p>
+          <div class="sourceCode" id="cb1"><pre
+          class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/clang-llvm/llvm/tools/clang</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> tools/extra/commentparser</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;add_subdirectory(commentparser)&#39;</span> <span class="op">&gt;&gt;</span> tools/extra/CMakeLists.txt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> tools/extra/commentparser/CMakeLists.txt</span></code></pre></div>
           <p>Then the <code>CMakeLists.txt</code> should look like
           this:</p>
           <pre><code>set(LLVM_LINK_COMPONENTS support)
@@ -122,14 +121,14 @@ target_link_libraries(commentparser
           in the main function, an <code>ASTFrontendAction</code> and an
           <code>ASTConsumer</code>. Starting with the command line
           parsing and setup:</p>
-          <p>{% highlight cpp %} static llvm:<span class="emoji"
-          data-emoji="cl">🆑</span>:OptionCategory MyToolCategory("My
-          tool options"); int main(int argc, const char **argv) {
-          CommonOptionsParser OptionsParser(argc, argv, MyToolCategory);
-          ClangTool Tool(OptionsParser.getCompilations(),
-          OptionsParser.getSourcePathList()); return
-          Tool.run(newFrontendActionFactory<FindCommentsAction>().get());
-          } {% endhighlight %}</p>
+          <div class="sourceCode" id="cb3"><pre
+          class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">static</span> llvm<span class="op">::</span>cl<span class="op">::</span>OptionCategory MyToolCategory<span class="op">(</span><span class="st">&quot;My tool options&quot;</span><span class="op">);</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="at">const</span> <span class="dt">char</span> <span class="op">**</span>argv<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  CommonOptionsParser OptionsParser<span class="op">(</span>argc<span class="op">,</span> argv<span class="op">,</span> MyToolCategory<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  ClangTool Tool<span class="op">(</span>OptionsParser<span class="op">.</span>getCompilations<span class="op">(),</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                 OptionsParser<span class="op">.</span>getSourcePathList<span class="op">());</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Tool<span class="op">.</span>run<span class="op">(</span>newFrontendActionFactory<span class="op">&lt;</span>FindCommentsAction<span class="op">&gt;().</span>get<span class="op">());</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
           <p>Nothing too interesting going on here yet, although note
           that we setup a new <code>OptionCategory</code>, this lets us
           hide all the default clang options displayed in the help, we
@@ -138,13 +137,15 @@ target_link_libraries(commentparser
           going to do here is create our <code>ASTConsumer</code> and
           forward the compiler's <code>ASTContext</code> to it. Here's
           that code:</p>
-          <p>{% highlight cpp %} class FindCommentsAction : public
-          clang::ASTFrontendAction { public: virtual
-          std::unique<em>ptr<clang::ASTConsumer> CreateASTConsumer(
-          clang::CompilerInstance &amp;Compiler, llvm::StringRef InFile)
-          { return std::unique</em>ptr<clang::ASTConsumer>( new
-          FindCommentsConsumer(&amp;Compiler.getASTContext())); } }; {%
-          endhighlight %}</p>
+          <div class="sourceCode" id="cb4"><pre
+          class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FindCommentsAction <span class="op">:</span> <span class="kw">public</span> clang<span class="op">::</span>ASTFrontendAction <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">virtual</span> <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>clang<span class="op">::</span>ASTConsumer<span class="op">&gt;</span> CreateASTConsumer<span class="op">(</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    clang<span class="op">::</span>CompilerInstance <span class="op">&amp;</span>Compiler<span class="op">,</span> llvm<span class="op">::</span>StringRef InFile<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>clang<span class="op">::</span>ASTConsumer<span class="op">&gt;(</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">new</span> FindCommentsConsumer<span class="op">(&amp;</span>Compiler<span class="op">.</span>getASTContext<span class="op">()));</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
           <p>Now for the interesting part, our <code>ASTConsumer</code>,
           this is the class that we can visit AST nodes in. If we wanted
           to, we could perform an action on all <code>IfStmt</code>,
@@ -153,29 +154,40 @@ target_link_libraries(commentparser
           <code>TranslationUnitDecl</code> is always the top level node
           in the Abstract Syntax Tree<a href="#fn1" class="footnote-ref"
           id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-          <p>{% highlight cpp %} class FindCommentsConsumer : public
-          clang::ASTConsumer { public: explicit
-          FindCommentsConsumer(ASTContext *Context) {}</p>
-          <p>// This is called after the full translation unit is parsed
-          virtual void HandleTranslationUnit(clang::ASTContext
-          &amp;Context) { auto comments =
-          Context.getRawCommentList().getComments(); for (auto comment :
-          comments) { std::cout &lt;&lt;
-          comment-&gt;getRawText(Context.getSourceManager()).str()
-          &lt;&lt; std::endl; } std::cout &lt;&lt; "Finished parsing for
-          comments" &lt;&lt; std::endl; } }; {% endhighlight %}</p>
+          <div class="sourceCode" id="cb5"><pre
+          class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FindCommentsConsumer <span class="op">:</span> <span class="kw">public</span> clang<span class="op">::</span>ASTConsumer <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">explicit</span> FindCommentsConsumer<span class="op">(</span>ASTContext <span class="op">*</span>Context<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// This is called after the full translation unit is parsed</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">virtual</span> <span class="dt">void</span> HandleTranslationUnit<span class="op">(</span>clang<span class="op">::</span>ASTContext <span class="op">&amp;</span>Context<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> comments <span class="op">=</span> Context<span class="op">.</span>getRawCommentList<span class="op">().</span>getComments<span class="op">();</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> comment <span class="op">:</span> comments<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> comment<span class="op">-&gt;</span>getRawText<span class="op">(</span>Context<span class="op">.</span>getSourceManager<span class="op">()).</span>str<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">&quot;Finished parsing for comments&quot;</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
           <p>That's all we need for this frontend action, we are just
           going to print out the comments that we find in each
           translation unit.</p>
           <p>For testing, I'm going to use a simple source file
           <code>test.cpp</code>:</p>
-          <p>{% highlight cpp %} /** Other comment <em>/ // This is the
-          main method /// Documentation comment /</em> block comment
-          */</p>
-          <p>int f(int x) { int result = (x / 42); // end of line
-          comment return result; } /** this is a block comment */</p>
-          <p>int main(int argc, char** argv) { return 0; } {%
-          endhighlight %}</p>
+          <div class="sourceCode" id="cb6"><pre
+          class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">/** Other comment */</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// This is the main method</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">/// Documentation comment</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">/* block comment */</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> f<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> result <span class="op">=</span> <span class="op">(</span>x <span class="op">/</span> <span class="dv">42</span><span class="op">);</span> <span class="co">// end of line comment</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">/** this is a block comment */</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">**</span> argv<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
           <p>Compiling and running the frontend action:</p>
           <pre><code>ninja commentparser
 ./commentparser test.cpp --</code></pre>
