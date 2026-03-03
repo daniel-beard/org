@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Simple Image Saving code c++ | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Simple Image Saving code c++</h1>
+          <p class="meta">
+            2011-06-06
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>A major annoyance for me is saving images from c++. I can't
+          really find any libraries that I like, they are either too
+          complex for the task or they don't do what I want them to do.
+          So I have created my own, extremely lightweight image
+          library.</p>
+          <p>All you need to run this is two files, the cpp file and the
+          header. I chose .tga because it is one of the easiest,
+          straightforward formats to save to.</p>
+          <p>Here is some example code of saving an image with this
+          library:</p>
+          <p>{% highlight c %} #include "Image.h"</p>
+          <pre><code>int main(int argc, char **argv) {
+   //declare image
+   short width = 256;
+   short height = 256;
+
+   TGAImage *img = new TGAImage(width,height);
+
+   //declare a temporary color variable
+   Colour c;
+
+   //Loop through image and set all pixels to red
+   for(int x=0; x&lt;width; x++)
+      for(int y=0; ysetPixel(c,x,y);
+      }
+
+   //write the image to disk
+   string filename = &quot;/Users/daniel/test.tga&quot;;
+   img-&gt;WriteImage(filename);
+
+   return 0;
+}</code></pre>
+          <p>{% endhighlight %}</p>
+          <p>This outputs a red image like so:</p>
+          <p><a
+          href="https://danielbeard.files.wordpress.com/2011/06/test.png"><img
+          src="https://danielbeard.files.wordpress.com/2011/06/test.png" /></a></p>
+          <p>Anyway, have fun using this in your projects, Here is the
+          download link for the source: <a
+          href="http://dl.dropbox.com/u/5387570/Blog/ImageSaverCode.zip">Download</a>
+          For more information on the TGA file format visit the
+          following links: <a
+          href="http://paulbourke.net/dataformats/tga/">http://paulbourke.net/dataformats/tga/ </a>
+          <a
+          href="http://en.wikipedia.org/wiki/Truevision_TGA">http://en.wikipedia.org/wiki/Truevision_TGA</a></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Auto build and deploy iOS apps using
+  Jenkins | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Auto build and deploy iOS apps using
+Jenkins</h1>
+          <p class="meta">
+            2013-04-23
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>We will have a look at a <code>TestProject</code> to get an
+          idea of how jenkins can be used to build, sign and deploy iOS
+          projects. The whole process consists of 4 steps. Note that to
+          deploy an app in this manner, an enterprise distribution
+          certificate is required for each app. This guide is how I have
+          set up my enterprise builds for my apps that use
+          <code>cocoaPods</code> for dependencies, but most of the same
+          principles apply for any iOS apps. Because the project uses
+          <code>cocoaPods</code>, it means we have to build a workspace
+          and have a build scheme set up.</p>
+          <p><strong>Note: Apple Enterprise licenses can ONLY be used
+          for builds internal to your company. I am not responsible for
+          anything that may happen if you try to distribute apps outside
+          your company using an enterprise license.</strong></p>
+          <p>This guide may be a bit brief, don't hesitate to ask me any
+          questions. This is mostly for my own reference.</p>
+          <h3 id="step-1---poll-scm">Step 1 - Poll SCM</h3>
+          <ul>
+          <li>Dev builds poll the SCM looking for changes to the
+          <code>master</code> branch at midnight every night.</li>
+          <li>If no changes have occurred, then the project is not
+          built.</li>
+          <li>If modifications have been made, the next step is
+          executed.</li>
+          </ul>
+          <h3 id="step-2---xcode-build">Step 2 - Xcode build</h3>
+          <p>Below is a screenshot from jenkins showing the fields used
+          for the xcode plugin.</p>
+          <p><a
+          href="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-23-at-4-01-12-pm.png"><img
+          src="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-23-at-4-01-12-pm.png?w=300"
+          alt="Screen Shot 2013-04-23 at 4.01.12 PM" /></a></p>
+          <ul>
+          <li><code>Clean before build</code> - we don't want any cached
+          compiled objects hanging around.</li>
+          <li><code>Xcode Schema File</code> -
+          <code>TestProjectDev</code>
+          <ul>
+          <li>Because of the way we have our project set up, our top
+          level item is a workspace
+          (<code>TestProject.xcworkspace</code>), we have to build based
+          on Schemes as Xcode does not support building a target from a
+          workspace.</li>
+          <li><code>TestProjectDev</code> specifies the scheme we want
+          to build with.</li>
+          </ul></li>
+          <li><code>Configuration</code> - <code>Release</code>
+          <ul>
+          <li>We want the release version. There are several subtle
+          differences between <code>Debug</code> and
+          <code>Release</code> versions. The most notable is that
+          <code>Debug</code> builds are usually built for just one
+          architecture, where <code>Release</code> builds are built for
+          all supported architectures, usually with compile time
+          optimisations as well.</li>
+          </ul></li>
+          <li><code>Workspace File</code> - This is our top level
+          workspace file (<code>TestProject.xcworkspace</code>) that we
+          build from. If this option wasn't specified, by default the
+          xcode build would look for the first <code>*.xcodeproj</code>
+          file it can find. This would cause our build to fail.</li>
+          <li><code>Unlock Keychain</code>
+          <ul>
+          <li>This allows us to unlock the keychain which is required
+          for signing or resigning <code>.ipa</code> files.</li>
+          <li>The location of the keychain is the default OSX
+          location</li>
+          </ul></li>
+          </ul>
+          <h3 id="step-3---resigning">Step 3 - Resigning</h3>
+          <ul>
+          <li>This step only occurs if previous steps were
+          successful</li>
+          <li>This step only occurs if the text <code>BUILD</code> is
+          present in the log text (basically every build)</li>
+          <li>The result of this build will be escalated to the job
+          status. If this step fails and other steps before it were
+          successful, the job will still fail.</li>
+          </ul>
+          <p>Below is the script used for resigning:</p>
+          <pre><code>#!/bin/sh
+
+PROJECT_BUILDDIR=&quot;${WORKSPACE}/build/TestProject/Build/Products/Release-iphoneos&quot;
+APPLICATION_NAME=&quot;TestProjectDev&quot;
+BUILD_HISTORY_DIR=&quot;/Users/administrator/Provisioning/builds&quot;
+DEVELOPER_NAME=&quot;iPhone Distribution: Test Company LTD&quot;
+PROVISIONING_PROFILE=&quot;/Users/administrator/Provisioning/TestProjectDevDistributionProfile.mobileprovision&quot;
+HOST_LOCATION=&quot;/Library/WebServer/Documents/apps&quot;
+
+#Sign The .app file and create .ipa file
+/usr/bin/xcrun -sdk iphoneos PackageApplication -v  &quot;${PROJECT_BUILDDIR}/${APPLICATION_NAME}.app&quot; -o  &quot;${BUILD_HISTORY_DIR}/${APPLICATION_NAME}.ipa&quot; --sign ${DEVELOPER_NAME} --embed ${PROVISIONING_PROFILE}
+
+#Get the version from the Info.plist file
+APP_PATH=&quot;${PROJECT_BUILDDIR}/${APPLICATION_NAME}.app&quot;
+VERSION=`defaults read ${APP_PATH}/Info CFBundleShortVersionString`
+BUNDLE_ID=`defaults read ${APP_PATH}/Info CFBundleIdentifier`
+
+# Create plist
+cat ${HOST_LOCATION}/template.plist | sed -e &quot;s/\${APP_NAME}/$APPLICATION_NAME/&quot; -e &quot;s/\${BUNDLE_ID}/$BUNDLE_ID/&quot; -e &quot;s/\${BUNDLE_VERSION}/$VERSION/&quot; &gt; ${HOST_LOCATION}/${APPLICATION_NAME}.plist</code></pre>
+          <ul>
+          <li>The first part of this script sets up the locations and
+          script variables
+          <ul>
+          <li><code>PROJECT_BUILDDIR</code> - The folder that the built
+          <code>.ipa</code> file resides from the previous build
+          step.</li>
+          <li><code>APPLICATION_NAME</code> - In this case it is
+          <code>TestProjectDev</code></li>
+          <li><code>BUILD_HISTORY_DIR</code> - The folder that the
+          re-signed app will be output to</li>
+          <li><code>DEVELOPER_NAME</code> - Has to match the
+          <code>.mobileprovision</code> file used for signing.</li>
+          <li><code>PROVISIONING_PROFILE</code> - The location of the
+          <code>.mobileprovision</code> file used for signing. These
+          must be downloaded from the Apple developer website or shown
+          in Finder from the Xcode organizer.</li>
+          <li><code>HOST_LOCATION</code> - Where the final signed app
+          will exist</li>
+          </ul></li>
+          <li>The next stage of the build process is actually re-signing
+          the app using the Xcode command line tool called
+          <code>xcrun</code>. Note that the version in
+          <code>/usr/bin/</code> is a symlink to the Xcode version that
+          has been selected by the <code>xcodeselect</code> command line
+          tool. This is important if more than one version of xcode is
+          installed. Each version of Xcode stores command line tools
+          inside the <code>.app</code> file in applications.</li>
+          <li>After re-signing, we grab the version, and bundle-id.
+          These are used in the next part
+          <ul>
+          <li><code>APP_PATH</code> - The full path including the
+          <code>.app</code> extension of the re-signed app</li>
+          <li><code>VERSION</code> - This is the
+          <code>CFBundleShortVersionString</code>. This value is set
+          when you change the version in Xcode for each of the build
+          schemes.</li>
+          <li><code>BUNDLE_ID</code> - The
+          <code>CFBundleIdentifier</code> for the built app. For
+          <code>TestProject</code>, this will be
+          <code>au.com.wordpress.danielbeard.TestProject</code>. These
+          can be set by modifying the build Schemes, but shouldn't be
+          changed for existing applications. Production has a different
+          bundleId, which is what allows for both the dev and prod
+          versions to exist on a single iPad at the same time.</li>
+          </ul></li>
+          <li>We then auto generate the enterprise install PLIST file.
+          This is needed to install apps from a URL location and acts as
+          a "description" of the app that is about to be installed.
+          <ul>
+          <li>The actual creation of this file is quite simple, we use
+          <code>cat</code> to copy the <code>template.plist</code> file
+          to the new location and then using <code>sed</code> we replace
+          the <code>BUNDLE_ID</code> and <code>BUNDLE_VERSION</code>
+          values. These values are read from the Apps Info.plist from
+          inside the .app folder.</li>
+          </ul></li>
+          </ul>
+          <p>Below is an example template.plist file</p>
+          <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+        &lt;key&gt;items&lt;/key&gt;
+        &lt;array&gt;
+                &lt;dict&gt;
+                        &lt;key&gt;assets&lt;/key&gt;
+                        &lt;array&gt;
+                                &lt;dict&gt;
+                                        &lt;key&gt;kind&lt;/key&gt;
+                                        &lt;string&gt;software-package&lt;/string&gt;
+                                        &lt;key&gt;url&lt;/key&gt;
+                                        &lt;string&gt;http://hostlocation/apps/${APP_NAME}.ipa&lt;/string&gt;
+                                &lt;/dict&gt;
+                        &lt;/array&gt;
+                        &lt;key&gt;metadata&lt;/key&gt;
+                        &lt;dict&gt;
+                                &lt;key&gt;bundle-identifier&lt;/key&gt;
+                                &lt;string&gt;${BUNDLE_ID}&lt;/string&gt;
+                                &lt;key&gt;bundle-version&lt;/key&gt;
+                                &lt;string&gt;${BUNDLE_VERSION}&lt;/string&gt;
+                                &lt;key&gt;kind&lt;/key&gt;
+                                &lt;string&gt;software&lt;/string&gt;
+                                &lt;key&gt;title&lt;/key&gt;
+                                &lt;string&gt;${APP_NAME}&lt;/string&gt;
+                        &lt;/dict&gt;
+                &lt;/dict&gt;
+        &lt;/array&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;</code></pre>
+          <h3 id="step-4---copying-to-host-location">Step 4 - Copying to
+          host location</h3>
+          <ul>
+          <li>This step simple grabs the signed <code>.ipa</code> file
+          and puts it in the host location so that the macmini website
+          can serve it over a URL. The host location is
+          <code>/Library/Webserver/Documents/apps</code></li>
+          </ul>
+          <p>Script looks like this:</p>
+          <pre><code>#!/bin/sh
+
+APPLICATION_NAME=&quot;TestProjectDev.ipa&quot;
+BUILD_HISTORY_DIR=&quot;/Users/administrator/Provisioning/builds&quot;
+HOST_LOCATION=&quot;/Library/WebServer/Documents/apps/&quot;
+
+cp &quot;${BUILD_HISTORY_DIR}/${APPLICATION_NAME}&quot; &quot;${HOST_LOCATION}${APPLICATION_NAME}&quot;</code></pre>
+          <p>And that's it! The output is a .ipa file and a .plist file.
+          These are both required to install an enterprise app.</p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

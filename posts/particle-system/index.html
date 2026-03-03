@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Particle System | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Particle System</h1>
+          <p class="meta">
+            2010-07-25
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>Today I was kind of bored so I decided to write a simple
+          particle system in XNA. The helpful tutorials over at <a
+          href="https://rbwhitaker.wikidot.com/"
+          class="uri">https://rbwhitaker.wikidot.com/</a> helped point
+          me in the right direction. This particle system is very
+          primitive at the moment, a particle emitter follows the mouse
+          around the window. When I get the time (or the motivation) I
+          am going to add a few more features such as different
+          particles (smoke, water, fire, etc.), some different effects
+          like attraction and repulsion and maybe the option to place
+          multiple emitters in the scene.</p>
+          <p>Although this particle system is in 2D, the concepts are
+          easily translated into 3D. Most games engines include a
+          standard particle system like Ogre3D does, but I wanted to
+          learn how to create one from scratch anyway. The image in this
+          post shows the particles following the mouse around the
+          screen. I can post source code on request, but I would rather
+          upload after I add some more features.</p>
+          <figure>
+          <img src="../../img/posts/particlesystem.png"
+          style="display: block; margin: 0 auto" width="300" alt=" " />
+          <figcaption aria-hidden="true"> </figcaption>
+          </figure>
+          <p>Here is a download link for the application for you to play
+          around with (windows only) - <mark>(Link lost to
+          time)</mark></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

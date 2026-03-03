@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Setting up travis-ci for automated unit testing of iOS projects
+  on GitHub | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Setting up travis-ci for automated unit
+testing of iOS projects on GitHub</h1>
+          <p class="meta">
+            2013-05-07
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>This guide is how I set up new projects to run unit tests
+          automatically when I push a commit or merge a branch on GitHub
+          for iOS projects.</p>
+          <p>The first step is to create a new project in Xcode. I am
+          going to select a single view application and enable
+          storyboards, Automatic Reference Counting and Unit Tests.</p>
+          <p><a
+          href="https://danielbeard.files.wordpress.com/2013/05/screen-shot-2013-05-06-at-11-42-27-pm.png"><img
+          src="https://danielbeard.files.wordpress.com/2013/05/screen-shot-2013-05-06-at-11-42-27-pm.png?w=300"
+          alt="Screen Shot 2013-05-06 at 11.42.27 PM" /></a></p>
+          <p>All I'm going to change is the <code>testExample</code>
+          method in the unit testing bundle to something that will pass.
+          For now I have just gone with this:</p>
+          <pre><code>- (void)testExample
+{
+    STAssertNil(nil, @&quot;This object should be nil&quot;);
+}</code></pre>
+          <p>Check that the tests pass by hitting
+          <code>cmd</code>+<code>u</code>. Now that I have my unit tests
+          passing, I'm going to add this project to GitHub. I'll leave
+          the details out here, as this isn't the focus of this tutorial
+          but you can find my example project here: <a
+          href="https://github.com/daniel-beard/SettingUpTravisCIForiOS">https://github.com/daniel-beard/SettingUpTravisCIForiOS</a>.</p>
+          <p>Now we can setup the TravisCI build. I use the
+          <code>xctool</code> to build my projects as it has a nicer
+          output and is easier to use than the built in
+          <code>xcodebuild</code> tool. Add <code>xctool</code> as a
+          submodule to the git repository using the following
+          commands:</p>
+          <pre><code>git submodule add https://github.com/facebook/xctool.git ./xctool
+git submodule update --init
+git commit ./xctool -m &quot;Added xctool as a submodule&quot;</code></pre>
+          <p>Then we need to add a config file so that travis-ci knows
+          how to build our project. This file is named
+          <code>.travis.yml</code> and lives in the root of the git
+          repository. Here is the contents of mine:</p>
+          <pre><code>before_install: &quot;git submodule init &amp;&amp; git submodule update &amp;&amp; sudo gem update --system &amp;&amp; sudo gem install bundler &amp;&amp; bundle install&quot;
+script: &quot;bundle exec rake test --trace&quot;</code></pre>
+          <p>Then we have to add a <code>Rakefile</code> that tells the
+          <code>xctool</code> which project and target to build:</p>
+          <pre><code>desc &#39;Run the tests&#39;
+task :test do
+   exec(&#39;xctool/xctool.sh -project SettingUpTravisCIForiOS.xcodeproj -scheme SettingUpTravisCIForiOS test&#39;)
+end
+
+task :default =&gt; :test</code></pre>
+          <p>And finally the <code>Gemfile</code></p>
+          <pre><code>source &#39;https://rubygems.org&#39;
+
+gem &#39;rake&#39;</code></pre>
+          <p>You can then test locally that your project builds using
+          the command <code>rake</code> in your root git repository. I
+          get build messages, then
+          <code>** TEST SUCCEEDED: 1 of 1 tests passed ** (25285 ms)</code>.
+          Now that we have the unit tests running locally, all that is
+          left is to set up the travis-ci build. Login to <a
+          href="https://travis-ci.org/">https://travis-ci.org/</a> with
+          your GitHub account and under account settings select the
+          repository that should be unit tested automatically. This
+          automatically sets up a service hook in GitHub so that every
+          time you push to your repository, it will get unit tested.</p>
+          <p>You can also use the status images from travis-ci to show
+          the test status directly in your README file on GitHub. Check
+          out my example project here: <a
+          href="https://github.com/daniel-beard/SettingUpTravisCIForiOS">SettingUpTravisCIForiOS</a></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

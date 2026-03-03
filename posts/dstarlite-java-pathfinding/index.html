@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>DStarLite Java Pathfinding | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">DStarLite Java Pathfinding</h1>
+          <p class="meta">
+            2011-08-09
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>D*Lite is an incremental heuristic search algorithm that is
+          used by agents (game ai, or robots) where the surrounding
+          terrain is not completely known. The algorithm makes
+          assumptions about the unknown terrain. D*Lite finds the
+          shortest route from the start to the goal position, and as it
+          encounters new obstacles these are taken into account and only
+          part of the path is modified. Alternatively, pathfinding
+          algorithms like A* typically have to replan the entire path
+          when the environment changes.</p>
+          <p>D*Lite was developed by Sven Koenig in 2002 is based on the
+          LPA* algorithm. I needed a suitable, computationally efficient
+          algorithm for pathfinding in my current project and couldn't
+          find any java versions of the D*Lite algorithm that would have
+          suited my purpose. My version is a standalone java version of
+          D*Lite based on an existing C++ implementation.</p>
+          <p>This implementation is based on the original research
+          paper <a
+          href="http://idm-lab.org/bib/abstracts/Koen02e.html">http://idm-lab.org/bib/abstracts/Koen02e.html</a>
+          and also based on the c++ version located here: <a
+          href="http://code.google.com/p/dstarlite/">http://code.google.com/p/dstarlite/</a></p>
+          <p>For further reading check out the wikipedia article: <a
+          href="http://en.wikipedia.org/wiki/D*">Here</a> Sven Koenig's
+          personal page: <a
+          href="http://idm-lab.org/project-a.html">Here</a> There is
+          also an applet to help understand the algorithm: <a
+          href="http://homepages.dcc.ufmg.br/~lhrios/applet_d_lite/index.html">Here </a></p>
+          <p><strong>You can find my DStarLiteJava project on
+          GitHub</strong>: <a
+          href="https://github.com/paintstripper/DStarLiteJava">Here</a></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

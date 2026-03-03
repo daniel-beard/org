@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Clang frontend actions (Part 1) | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Clang frontend actions (Part 1)</h1>
+          <p class="meta">
+            2016-04-19
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>I had an interesting discussion with a co-worker yesterday,
+          we were discussing how to grab all the comments from an
+          Objective-C source file. We tried to think about how to do
+          that with a regex, which probably would have worked
+          <em>ok</em>, but definitely wouldn't have handled all the edge
+          cases easily.</p>
+          <p>I've been using clang's awesome libTooling library for
+          writing frontend actions recently so I thought I'd try and
+          take a quick pass at writing a frontend action that can grab
+          all the comments from a source file.</p>
+          <p>Setting up the envionment for building frontend actions is
+          covered in the awesome clang <a
+          href="http://clang.llvm.org/docs/LibASTMatchersTutorial.html">Tutorial
+          for building tools using LibTooling and LibASTMatchers</a>
+          documentation, so go do that if you haven't already!</p>
+          <p>Next, I set up a new frontend action. I cloned down llvm
+          into the <code>~/clang-llvm</code> folder:</p>
+          <p>{% highlight bash %} cd ~/clang-llvm/llvm/tools/clang mkdir
+          tools/extra/commentparser echo
+          'add_subdirectory(commentparser)' &gt;&gt;
+          tools/extra/CMakeLists.txt vim
+          tools/extra/commentparser/CMakeLists.txt {% endhighlight
+          %}</p>
+          <p>Then the <code>CMakeLists.txt</code> should look like
+          this:</p>
+          <pre><code>set(LLVM_LINK_COMPONENTS support)
+
+add_clang_executable(commentparser
+  CommentParser.cpp
+)
+target_link_libraries(commentparser
+  clangTooling
+  clangBasic
+  clangASTMatchers
+)</code></pre>
+          <p>Now we can start writing our fontend action. We need a
+          couple of different elements: setting up command line parsing
+          in the main function, an <code>ASTFrontendAction</code> and an
+          <code>ASTConsumer</code>. Starting with the command line
+          parsing and setup:</p>
+          <p>{% highlight cpp %} static llvm:<span class="emoji"
+          data-emoji="cl">🆑</span>:OptionCategory MyToolCategory("My
+          tool options"); int main(int argc, const char **argv) {
+          CommonOptionsParser OptionsParser(argc, argv, MyToolCategory);
+          ClangTool Tool(OptionsParser.getCompilations(),
+          OptionsParser.getSourcePathList()); return
+          Tool.run(newFrontendActionFactory<FindCommentsAction>().get());
+          } {% endhighlight %}</p>
+          <p>Nothing too interesting going on here yet, although note
+          that we setup a new <code>OptionCategory</code>, this lets us
+          hide all the default clang options displayed in the help, we
+          don't want those for our tool.</p>
+          <p>Next is the <code>ASTFrontendAction</code>, all we are
+          going to do here is create our <code>ASTConsumer</code> and
+          forward the compiler's <code>ASTContext</code> to it. Here's
+          that code:</p>
+          <p>{% highlight cpp %} class FindCommentsAction : public
+          clang::ASTFrontendAction { public: virtual
+          std::unique<em>ptr<clang::ASTConsumer> CreateASTConsumer(
+          clang::CompilerInstance &amp;Compiler, llvm::StringRef InFile)
+          { return std::unique</em>ptr<clang::ASTConsumer>( new
+          FindCommentsConsumer(&amp;Compiler.getASTContext())); } }; {%
+          endhighlight %}</p>
+          <p>Now for the interesting part, our <code>ASTConsumer</code>,
+          this is the class that we can visit AST nodes in. If we wanted
+          to, we could perform an action on all <code>IfStmt</code>,
+          <code>ForLoop</code>, <code>EnumDecl</code>, etc. All we need
+          to visit to handle comments is the translation unit. A
+          <code>TranslationUnitDecl</code> is always the top level node
+          in the Abstract Syntax Tree<a href="#fn1" class="footnote-ref"
+          id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+          <p>{% highlight cpp %} class FindCommentsConsumer : public
+          clang::ASTConsumer { public: explicit
+          FindCommentsConsumer(ASTContext *Context) {}</p>
+          <p>// This is called after the full translation unit is parsed
+          virtual void HandleTranslationUnit(clang::ASTContext
+          &amp;Context) { auto comments =
+          Context.getRawCommentList().getComments(); for (auto comment :
+          comments) { std::cout &lt;&lt;
+          comment-&gt;getRawText(Context.getSourceManager()).str()
+          &lt;&lt; std::endl; } std::cout &lt;&lt; "Finished parsing for
+          comments" &lt;&lt; std::endl; } }; {% endhighlight %}</p>
+          <p>That's all we need for this frontend action, we are just
+          going to print out the comments that we find in each
+          translation unit.</p>
+          <p>For testing, I'm going to use a simple source file
+          <code>test.cpp</code>:</p>
+          <p>{% highlight cpp %} /** Other comment <em>/ // This is the
+          main method /// Documentation comment /</em> block comment
+          */</p>
+          <p>int f(int x) { int result = (x / 42); // end of line
+          comment return result; } /** this is a block comment */</p>
+          <p>int main(int argc, char** argv) { return 0; } {%
+          endhighlight %}</p>
+          <p>Compiling and running the frontend action:</p>
+          <pre><code>ninja commentparser
+./commentparser test.cpp --</code></pre>
+          <pre><code>/** Other comment */
+/// Documentation comment
+/** this is a block comment */
+Finished parsing for comments</code></pre>
+          <p>Wait, what happened to the other comments in the file?
+          Clang treats some comments differently to others. Comments
+          that start with <code>/**</code> or <code>///</code> are
+          treated as documentation comments. By default, clang
+          <code>only</code> parses documentation comments.<a href="#fn2"
+          class="footnote-ref" id="fnref2"
+          role="doc-noteref"><sup>2</sup></a></p>
+          <p>Luckily, there's a command line flag to override this and
+          parse <em>all</em> comments
+          <code>-fparse-all-comments</code>:</p>
+          <pre><code>./commentparser test.cpp -- -fparse-all-comments
+
+/** Other comment */
+// This is the main method
+/// Documentation comment
+/* block comment */
+// end of line comment
+/** this is a block comment */
+Finished parsing for comments</code></pre>
+          <p>That gives us all the comments in the translation unit!
+          Note that if we wanted to compile a more complicated class
+          with imports or a project that has multiple files, we'd have
+          to use a compilation database<a href="#fn3"
+          class="footnote-ref" id="fnref3"
+          role="doc-noteref"><sup>3</sup></a>. Checkout out the full
+          source code for this frontend action <a
+          href="https://gist.github.com/daniel-beard/7dab28f3c2fbf24f6c6c3816d76109af">CommentParser.cpp</a></p>
+          <section id="footnotes"
+          class="footnotes footnotes-end-of-document"
+          role="doc-endnotes">
+          <hr />
+          <ol>
+          <li id="fn1"><p><a
+          href="http://clang.llvm.org/docs/IntroductionToTheClangAST.html">http://clang.llvm.org/docs/IntroductionToTheClangAST.html</a><a
+          href="#fnref1" class="footnote-back"
+          role="doc-backlink">↩︎</a></p></li>
+          <li id="fn2"><p><a
+          href="http://www.cs.ubbcluj.ro/~studia-i/2014-macs/06Cseri.pdf">http://www.cs.ubbcluj.ro/~studia-i/2014-macs/06Cseri.pdf</a><a
+          href="#fnref2" class="footnote-back"
+          role="doc-backlink">↩︎</a></p></li>
+          <li id="fn3"><p><a
+          href="http://clang.llvm.org/docs/JSONCompilationDatabase.html">http://clang.llvm.org/docs/JSONCompilationDatabase.html</a><a
+          href="#fnref3" class="footnote-back"
+          role="doc-backlink">↩︎</a></p></li>
+          </ol>
+          </section>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

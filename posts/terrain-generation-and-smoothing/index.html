@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Terrain Generation - Diamond Square
+  Algorithm | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Terrain Generation - Diamond Square
+Algorithm</h1>
+          <p class="meta">
+            2010-08-07
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>I have posted previously about a simple terrain heightmap
+          display program I have made, but never talked about some of
+          the methods of generating and manipulating heightmap based
+          terrain systems.</p>
+          <p>The method I have implemented in my terrain generation
+          program is known as the Diamond-Square algorithm and is a
+          method of procedural terrain generation. The Diamond-Square
+          algorithm is also known as random midpoint displacement
+          fractal, cloud fractal or the plasma fractal.</p>
+          <p>We start with a 2D array of size (n^2 + 1) E.g. 257, 513
+          etc. Set the four corners to initial values, these can be
+          random or preset it doesn't really matter too much at this
+          point.</p>
+          <p>We then perform the diamond step which consists of taking
+          the four points arranged in a square shape, averaging the four
+          values and adding a random value to the average, creating
+          diamond shapes. The square step then averages the four corners
+          of the diamonds created in the previous step. The center value
+          of this step becomes the corners of the next step. The diamond
+          and square step are repeated until all the points in the grid
+          have values assigned to them.</p>
+          <p><img src="../../img/posts/diamond-square-algorithm.png"
+          style="display: block; margin: 0 auto" /></p>
+          <p>The image above shows the alternating steps being carried
+          out. The red dots are the pixels with new values, the black
+          dots are pixels with existing values. The pseudocode is as
+          follows:</p>
+          <pre><code> While the length of the side of the squares is greater than zero {
+     Pass through the array and perform the diamond step for each square present.
+     Pass through the array and perform the square step for each diamond present.
+     Reduce the random number range.
+ } </code></pre>
+          <p>Then we end up with a program that can generate terrain /
+          cloud maps / general fractal noise. Below is an example image
+          that I have generated at 512x512.</p>
+          <p><img src="../../img/posts/terrain.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p>Below is a sample of what the terrain looks like with
+          simple shading in OpenGL without textures. The shading effect
+          is calculated by giving a colour based on the minimum and
+          maximum values of the heightmap. E.g.
+          <code>VertexColour = (value - minY) / (maxY - minY);</code></p>
+          <p><img src="../../img/posts/terrain-simple.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p>I find that the easiest way to import data from my terrain
+          generation program into the display program is to use the
+          built-in IO functions to create an easy to read file format.
+          The advantage of using this method is that you can store
+          heights as floating point values instead of bytes (0-255) this
+          gives many more possible heights, a greater dynamic range. The
+          code to write these files is quite simple:</p>
+          <div class="sourceCode" id="cb2"><pre
+          class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> SaveTerrFile<span class="op">(){</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">//Write to file</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">FILE</span> <span class="op">*</span>fp<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        fp <span class="op">=</span> fopen<span class="op">(</span><span class="st">&quot;terrain.terr&quot;</span><span class="op">,</span> <span class="st">&quot;wb&quot;</span><span class="op">);</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">//print out the data</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> x<span class="op">=</span><span class="dv">0</span><span class="op">;</span> x <span class="op">&lt;</span> DATA_SIZE<span class="op">-</span><span class="dv">1</span><span class="op">;</span> x<span class="op">++){</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> y<span class="op">=</span><span class="dv">0</span><span class="op">;</span> y <span class="op">&lt;</span> DATA_SIZE<span class="op">-</span><span class="dv">1</span><span class="op">;</span> y<span class="op">++){</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                  <span class="co">//populate the point struct</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                  point<span class="op">.</span>x <span class="op">=</span> x<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                  point<span class="op">.</span>y <span class="op">=</span> data<span class="op">[</span>x<span class="op">][</span>y<span class="op">];</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                  point<span class="op">.</span>z <span class="op">=</span> y<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                  <span class="co">//smooth out the range a bit</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                  point<span class="op">.</span>y <span class="op">=</span> <span class="op">(</span>point<span class="op">.</span>y<span class="op">-</span>minY<span class="op">)/(</span>maxY<span class="op">-</span>minY<span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                  point<span class="op">.</span>y <span class="op">*=</span> <span class="dv">255</span><span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                  <span class="co">//write to file</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                  fwrite<span class="op">(&amp;</span>point<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>point<span class="op">),</span> <span class="dv">1</span><span class="op">,</span> fp<span class="op">);</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>           <span class="op">}</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">//close file pointer</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        fclose<span class="op">(</span>fp<span class="op">);</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+          <p>Other features that I think need to be added to this code
+          is the ability to generate textures as well based on the
+          height values, smoothing of the terrain and improvements to
+          the viewer. For now though, here is some source code. This
+          code saves the height values to a file. I haven't included any
+          image saving functionality in this version because I am not
+          sure of the licensing issues that may arise.</p>
+          <p>Other Useful Links / Articles:</p>
+          <p><a
+          href="http://www.gameprogrammer.com/fractal.html#diamond">http://www.gameprogrammer.com/fractal.html#diamond</a><a
+          href="http://stackoverflow.com/questions/2755750/diamond-square-algorithm">http://stackoverflow.com/questions/2755750/diamond-square-algorithm</a><a
+          href="http://en.wikipedia.org/wiki/Diamond-square_algorithm">http://en.wikipedia.org/wiki/Diamond-square_algorithm</a></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

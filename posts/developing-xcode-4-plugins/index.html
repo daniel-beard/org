@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Developing Xcode 4 Plugins | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Developing Xcode 4 Plugins</h1>
+          <p class="meta">
+            2013-04-29
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>This is a quick guide that documents how to start
+          developing plugins for Xcode4. You need to have Xcode
+          installed to create plugins.</p>
+          <h3 id="step-1---xcode-plugin-project-template">Step 1 - Xcode
+          Plugin Project Template</h3>
+          <ul>
+          <li>Grab the Xcode project template for creating plugins from
+          <a
+          href="https://github.com/kattrali/Xcode4-Plugin-Template">here</a></li>
+          <li>Create the plugin template folder
+          <code>~/Library/Developer/Xcode/Templates/Project Templates/Application Plug-in/Xcode4 Plugin.xctemplate</code>
+          if it doesn't already exist.</li>
+          <li>A quick way to do this is with the following command
+          <code>mkdir -p "~/Library/Developer/Xcode/Templates/Project Templates/Application Plug-in/Xcode4 Plugin.xctemplate"</code></li>
+          <li>Copy the contents of the GitHub repository to the folder
+          you just created.</li>
+          <li>Restart Xcode.</li>
+          </ul>
+          <h3 id="step-2---create-a-test-project">Step 2 - Create a test
+          project</h3>
+          <ul>
+          <li>Open Xcode, and select
+          <code>File &gt; New &gt; Project</code></li>
+          <li>Then under <code>OS X &gt; Templates</code> tap
+          <code>Xcode4 Plugin</code> (shown below)</li>
+          </ul>
+          <p><a
+          href="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-29-at-3-44-05-pm.png"><img
+          src="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-29-at-3-44-05-pm.png?w=300"
+          alt="Screen Shot 2013-04-29 at 3.44.05 PM" /></a></p>
+          <p>From the GitHub repo:</p>
+          <pre><code>The default plugin file links against AppKit and Foundation, and, when built 
+(and Xcode is restarted), creates a menu item labeled &quot;Do Action&quot; in the File menu. 
+Pressing the menu item should open an alert. Customize at will!</code></pre>
+          <p>If we run the project we just created, it will
+          automatically build and copy the plugin to the right location.
+          In this case it is
+          <code>~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/[Project Name].xcplugin</code>.
+          Restarting Xcode, we get a new menu item under the
+          <code>File</code> menu!</p>
+          <h3 id="screen-shot-2013-04-29-at-35302-pm"><a
+          href="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-29-at-3-53-02-pm.png"><img
+          src="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-29-at-3-53-02-pm.png"
+          alt="Screen Shot 2013-04-29 at 3.53.02 PM" /></a></h3>
+          <p>When we click on the menu item, we get an alert:</p>
+          <h3 id="screen-shot-2013-04-29-at-35349-pm"><a
+          href="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-29-at-3-53-49-pm.png"><img
+          src="https://danielbeard.files.wordpress.com/2013/04/screen-shot-2013-04-29-at-3-53-49-pm.png?w=300"
+          alt="Screen Shot 2013-04-29 at 3.53.49 PM" /></a></h3>
+          <p>Notes:</p>
+          <ul>
+          <li>Xcode plugins have to be written using Objective-C GC,
+          this means you have to use <code>retain</code> and
+          <code>release</code> calls in your code. (No ARC
+          support).</li>
+          </ul>
+          <h3 id="where-to-go-from-here">Where to go from here?</h3>
+          <ul>
+          <li><a href="http://stackoverflow.com/a/12478484/1144632">This
+          StackOverflow answer</a> has some great ideas on where to go
+          next</li>
+          <li>You can get a dump of the private headers that Xcode uses
+          by using the <a
+          href="https://github.com/nygard/class-dump">class-dump</a>
+          tool</li>
+          <li><code>brew install class-dump</code> is the quickest way
+          to get it if you have homebrew installed.</li>
+          <li>IDEKit and IDEFoundation are present at
+          <code>Xcode.app/Contents/Frameworks</code></li>
+          <li>DVTKit and DVTFoundation are present at
+          <code>Xcode.app/Contents/SharedFrameworks</code></li>
+          <li>By registering an observer for <code>nil</code> you can
+          see all the notifications that are being called. This is
+          useful to find out which actions are called and when, and what
+          notifications you might need to listen for.</li>
+          </ul>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Objective-C Style Guide | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Objective-C Style Guide</h1>
+          <p class="meta">
+            2013-04-17
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>This is the style guide that I follow when programming in
+          Objective-C, this is for my own reference, but other people
+          may find this useful.</p>
+          <h3 id="general">General</h3>
+          <ul>
+          <li>Use modern objective-c 2.0 syntax</li>
+          <li>Use ARC whenever possible.</li>
+          <li>Manual memory management should only be used when using
+          older libraries that haven't been updated yet.</li>
+          <li>Use tabs when indenting, not spaces.</li>
+          </ul>
+          <h3 id="code-naming-basics">Code Naming Basics</h3>
+          <ul>
+          <li>Follow the <a
+          href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingBasics.html#//apple_ref/doc/uid/20001281-BBCHBFAH">Apple
+          naming guidelines</a></li>
+          <li>Use descriptive names, even if they are long. Xcode has
+          great code completion features. <em>Use them</em>.
+          <ul>
+          <li>Clarity is preferred over all else.</li>
+          <li>E.g. Compare the two methods:
+          <code>[spaceship fly: 10.0f]</code> and
+          <code>[spaceship flyAtSpeed: 10.0f]</code>.</li>
+          <li>Note how much clearer the second declaration is, the
+          method describes its intentions and parameter names.</li>
+          </ul></li>
+          <li>Don't use abbreviations. E.g. <code>bgColor</code> vs.
+          <code>backgroundColor</code></li>
+          <li>Custom resuseable classes should be prefixed with
+          <code>AFG</code>
+          <ul>
+          <li>Application level classes do not have to be prefixed. E.g.
+          ViewControllers</li>
+          </ul></li>
+          <li>All view controllers should be descriptively named and end
+          with <code>ViewController</code>.
+          <ul>
+          <li>E.g. <code>CalculatorSettingsViewController</code></li>
+          </ul></li>
+          </ul>
+          <h3 id="commenting">Commenting</h3>
+          <ul>
+          <li>Follow the <a
+          href="http://gentlebytes.com/appledoc/">appledoc</a> code
+          formatting style.</li>
+          <li>Only comment the method declarations. E.g. In the
+          <code>@interface</code> or private
+          <code>@interface ... ()</code> code blocks.</li>
+          <li>Describe what the method does, the parameter names and the
+          return value and what it signifies.</li>
+          </ul>
+          <p>The following is a good example of method commenting:</p>
+          <pre><code>/** This method asks the delegate if the AFGContainerViewController should pop the current view from the view stack.
+ @param - The current AFGContainerViewController object
+ @return A BOOL value indicating if the current view controller should be removed from the AFGContainerViewController&#39;s view stack.
+ */
+-(BOOL) AFGContainerViewControllerShouldPopContainerViewController: (AFGContainerViewController*) containerViewController;</code></pre>
+          <h3 id="spacing">Spacing</h3>
+          <pre><code>-(void) performOperationWithObject: (NSObject*) objectName {
+
+  NSLog(@&quot;This is a well spaced method&quot;);
+  [objectName performSomeOperation];
+}</code></pre>
+          <ul>
+          <li>No space between the class or instance specifier
+          <code>(+,-)</code></li>
+          <li>Single space between the return type and method name</li>
+          <li>Single spaces between method signature, object types and
+          object names</li>
+          <li>Brace on the same line as the method signature.</li>
+          <li>Optional newline below the method signature for
+          readability</li>
+          <li>No newline before the closing brace</li>
+          </ul>
+          <h3 id="variables-and-initializers">Variables and
+          Initializers</h3>
+          <ul>
+          <li>Variable names should always start with lower case.
+          <ul>
+          <li>Good: <code>numberOfObjects</code></li>
+          <li>Bad: <code>NumberOfObjects</code></li>
+          </ul></li>
+          <li>Clearly identify the designated initializer for the class
+          <ul>
+          <li>All other initializers should propagate up to and use the
+          designated initializer.</li>
+          </ul></li>
+          <li>Override the superclass' designated initializer.</li>
+          <li>Initialization method should be at the top of the
+          <code>@implementation</code></li>
+          <li>Don't explicitly initialize variables to nil. Under ARC
+          this happens automatically.</li>
+          </ul>
+          <h3 id="properties">Properties</h3>
+          <ul>
+          <li>Don't <code>@synthesize</code> properties. Modern
+          objective-c does this for us automatically.</li>
+          <li>Always start with a lower case letter.</li>
+          <li><code>NSString</code> properties should always be
+          <code>copy</code></li>
+          <li><code>IBOutlets</code> should always be
+          <code>weak</code></li>
+          </ul>
+          <h3 id="other-readings">Other readings</h3>
+          <p>These are some good references / starting points for
+          creating your own style guide or just to see other coding
+          styles.</p>
+          <ul>
+          <li><a
+          href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html#//apple_ref/doc/uid/10000146-SW1">Apple
+          Coding Guidelines</a></li>
+          <li><a
+          href="http://cocoadevcentral.com/articles/000082.php">CocoaDevCentral
+          coding guidelines</a></li>
+          <li><a
+          href="http://google-styleguide.googlecode.com/svn/trunk/objcguide.xml">Google
+          Code Style</a></li>
+          <li><a
+          href="http://www.techotopia.com/index.php/The_Basics_of_Modern_Objective-C">Basics
+          of Modern Objective-C</a></li>
+          </ul>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

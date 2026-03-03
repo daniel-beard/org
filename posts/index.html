@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Index | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../css/main.css">
+  	<link rel="stylesheet" href="../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>
+    <div class="home">
+        <!-- TODODB: -->
+    <!-- <div class="call-out"  -->
+    <!-- style="background-image: url('{{ site.baseurl }}/{{ site.theme.header_text_feature_image }}')"> -->
+    <div class="call-out">
+        iOS and other stuff
+    </div>
+    
+    <div class="posts">
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/swift-per-file-compile-times">
+                Swift per-file compile times
+            </a>
+            </h1>
+            <p class="meta">
+                2016-08-17
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>I've been struggling with Swift compilation times recently. Working
+            on a larger app means that we are adding a lot of new Swift code. Swift
+            isn't the fastest to compile, it sometimes has issues around type
+            inference<a href="#fn1" class="footnote-ref" id="fnref1"
+            role="doc-noteref"><sup>1</sup></a> (Swift 3 appears to improve a lot of
+            this, but at time of writing I hadn't migrated yet).</p>
+            <section id="footnotes" class="footnotes footnotes-end-of-document"
+            role="doc-endnotes">
+            <hr />
+            <ol>
+            <li id="fn1"><p><a href="https://bugs.swift.org/browse/SR-305">Type
+            Inference Bug - SR-305</a><a href="#fnref1" class="footnote-back"
+            role="doc-backlink">↩︎</a></p></li>
+            </ol>
+            </section>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/swift-per-file-compile-times">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/clang-frontend-actions-part-1">
+                Clang frontend actions (Part 1)
+            </a>
+            </h1>
+            <p class="meta">
+                2016-04-19
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>I had an interesting discussion with a co-worker yesterday, we were
+            discussing how to grab all the comments from an Objective-C source file.
+            We tried to think about how to do that with a regex, which probably
+            would have worked <em>ok</em>, but definitely wouldn't have handled all
+            the edge cases easily.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/clang-frontend-actions-part-1">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/xcode-ui-testing-and-location-permission-alerts">
+                Xcode UI Testing and Location Permission Alerts
+            </a>
+            </h1>
+            <p class="meta">
+                2015-07-17
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>With Xcode 7, Apple has given us a new tool for user interface
+            testing. I'm not going to cover the basics here, but for an great
+            introduction to user interface testing in Xcode, check out this awesome
+            article: <a href="http://masilotti.com/ui-testing-xcode-7/">UI Testing
+            in Xcode 7</a></p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/xcode-ui-testing-and-location-permission-alerts">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/setting-up-travis-ci-for-automated-unit-testing-of-ios-projects-on-github">
+                Setting up travis-ci for automated unit testing of iOS projects on GitHub
+            </a>
+            </h1>
+            <p class="meta">
+                2013-05-07
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This guide is how I set up new projects to run unit tests
+            automatically when I push a commit or merge a branch on GitHub for iOS
+            projects.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/setting-up-travis-ci-for-automated-unit-testing-of-ios-projects-on-github">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/developing-xcode-4-plugins">
+                Developing Xcode 4 Plugins
+            </a>
+            </h1>
+            <p class="meta">
+                2013-04-29
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This is a quick guide that documents how to start developing plugins
+            for Xcode4. You need to have Xcode installed to create plugins.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/developing-xcode-4-plugins">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/automated-unit-testing-an-ios-app-with-jenkins">
+                Automated Unit testing an iOS app with Jenkins
+            </a>
+            </h1>
+            <p class="meta">
+                2013-04-24
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>We run the following script:</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/automated-unit-testing-an-ios-app-with-jenkins">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/auto-build-and-deploy-ios-apps-using-jenkins">
+                Auto build and deploy iOS apps using Jenkins
+            </a>
+            </h1>
+            <p class="meta">
+                2013-04-23
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>We will have a look at a <code>TestProject</code> to get an idea of
+            how jenkins can be used to build, sign and deploy iOS projects. The
+            whole process consists of 4 steps. Note that to deploy an app in this
+            manner, an enterprise distribution certificate is required for each app.
+            This guide is how I have set up my enterprise builds for my apps that
+            use <code>cocoaPods</code> for dependencies, but most of the same
+            principles apply for any iOS apps. Because the project uses
+            <code>cocoaPods</code>, it means we have to build a workspace and have a
+            build scheme set up.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/auto-build-and-deploy-ios-apps-using-jenkins">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/objective-c-style-guide">
+                Objective-C Style Guide
+            </a>
+            </h1>
+            <p class="meta">
+                2013-04-17
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This is the style guide that I follow when programming in
+            Objective-C, this is for my own reference, but other people may find
+            this useful.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/objective-c-style-guide">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/objective-c-runtime">
+                Objective-C Runtime
+            </a>
+            </h1>
+            <p class="meta">
+                2013-04-16
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>It is pretty rare to actually have to dive into the objc-runtime for
+            any day to day coding. Most developers wont have to touch the runtime,
+            however it is helpful to know what is possible and be able to use it if
+            required. The objective-c runtime is written in C and is how the
+            underlying parts of the objective-c language work including message
+            sending, ivars and properties. This post shows an example of where I
+            have used the Objective-C runtime in one of my projects.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/objective-c-runtime">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/git-notes">
+                Git notes
+            </a>
+            </h1>
+            <p class="meta">
+                2013-04-15
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This is a list of git notes that I use everyday. Hopefully someone
+            else finds it useful. I will update this list over time.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/git-notes">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/general-purpose-validation-library-for-objective-c-and-ios">
+                General purpose validation library for objective-c and iOS
+            </a>
+            </h1>
+            <p class="meta">
+                2013-01-09
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This is a simple validation framework that I created for one of my
+            projects that I am releasing under an open source MIT license.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/general-purpose-validation-library-for-objective-c-and-ios">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/adding-a-border-to-uilabel">
+                Adding a border to UILabel
+            </a>
+            </h1>
+            <p class="meta">
+                2013-01-04
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>I have created a simple control that subclasses UILabel to add a
+            border. Here's a screenshot:</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/adding-a-border-to-uilabel">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/metro-themed-button-for-ios">
+                Metro themed button for iOS
+            </a>
+            </h1>
+            <p class="meta">
+                2012-09-20
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>Just for fun, I have created a metro themed UIButton for iOS complete
+            with perspective 3D transform animations. Check out the screen shot and
+            video below.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/metro-themed-button-for-ios">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/adding-a-uiscrollview-to-a-uiview-ios">
+                Adding a multiple images to a UIScrollView (iOS)
+            </a>
+            </h1>
+            <p class="meta">
+                2012-09-17
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This is the code that I use when setting up a
+            <code>UIScrollView</code> to contain multiple images that can be
+            scrolled through. I add this code in the <code>viewDidLoad</code> or
+            <code>viewWillAppear</code> methods and then set the
+            <code>numberOfViews</code> to the number of images I want to display.
+            This will also scale the images to fit the size of the screen using an
+            aspect fit scaling. The example code loads images named "image1",
+            "image2" etc.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/adding-a-uiscrollview-to-a-uiview-ios">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/dbsignatureview">
+                DBSignatureView
+            </a>
+            </h1>
+            <p class="meta">
+                2012-09-06
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>One of the projects I am currently working on needs to capture a
+            signature from a user. So I am releasing the simple library that I
+            created for it.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/dbsignatureview">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/ios-updating-ui-when-using-blocks-background-threads">
+                iOS Updating UI when using blocks
+            </a>
+            </h1>
+            <p class="meta">
+                2012-04-16
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>Here is the method that I use to update the UI when a background
+            async thread. This is mostly for my own reference:</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/ios-updating-ui-when-using-blocks-background-threads">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/qr-code-encoding-on-an-ios-device">
+                QR Code encoding / generation on an iOS Device
+            </a>
+            </h1>
+            <p class="meta">
+                2012-03-05
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>In one of my recent projects, the need to encode QR codes on the
+            device came up. I tried a few different methods and wasn't really
+            satisfied with any of them. The method detailed here is the one I chose
+            based on ease of use and the quick set up time. The core library is
+            written in c and the base version can be found here: <a
+            href="http://fukuchi.org/works/qrencode/index.html.en">http://fukuchi.org/works/qrencode/index.html.en</a>
+            (download the entire project below).</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/qr-code-encoding-on-an-ios-device">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/setting-up-kinect-on-osx-the-easy-way">
+                Setting up Kinect on OSX the easy way
+            </a>
+            </h1>
+            <p class="meta">
+                2012-02-25
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>Open Terminal</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/setting-up-kinect-on-osx-the-easy-way">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/gradient-background-for-uiview-in-ios">
+                Gradient background for UIView in iOS
+            </a>
+            </h1>
+            <p class="meta">
+                2012-02-25
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>One of the pieces of code I find myself re-using constantly is
+            creating a gradient background for a UIView in iOS. This example will
+            show two examples of how to create a simple gradient background.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/gradient-background-for-uiview-in-ios">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/dstarlite-java-pathfinding">
+                DStarLite Java Pathfinding
+            </a>
+            </h1>
+            <p class="meta">
+                2011-08-09
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>D*Lite is an incremental heuristic search algorithm that is used by
+            agents (game ai, or robots) where the surrounding terrain is not
+            completely known. The algorithm makes assumptions about the unknown
+            terrain. D*Lite finds the shortest route from the start to the goal
+            position, and as it encounters new obstacles these are taken into
+            account and only part of the path is modified. Alternatively,
+            pathfinding algorithms like A* typically have to replan the entire path
+            when the environment changes.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/dstarlite-java-pathfinding">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/detaching-a-running-process-from-a-bash-shell">
+                Detaching a running process from a bash shell
+            </a>
+            </h1>
+            <p class="meta">
+                2011-06-08
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>When I run a command on a machine that I am ssh'ed into, most of the
+            time I want to kill the connection but have the command continue to
+            execute.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/detaching-a-running-process-from-a-bash-shell">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/image-saving-code-c">
+                Simple Image Saving code c++
+            </a>
+            </h1>
+            <p class="meta">
+                2011-06-06
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>A major annoyance for me is saving images from c++. I can't really
+            find any libraries that I like, they are either too complex for the task
+            or they don't do what I want them to do. So I have created my own,
+            extremely lightweight image library.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/image-saving-code-c">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/hardware-instancing-with-xna-minecraft-style">
+                Hardware Instancing with XNA (minecraft style)
+            </a>
+            </h1>
+            <p class="meta">
+                2011-01-16
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>Lately I have been really enjoying a game called Minecraft. It's an
+            indie game made by one guy, I highly recommend it!</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/hardware-instancing-with-xna-minecraft-style">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/chips-challenge-remake-first-tile-based-game">
+                Chips Challenge Remake / First Tile Based Game
+            </a>
+            </h1>
+            <p class="meta">
+                2010-11-27
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>I am starting to learn XNA at the moment, so I am doing what everyone
+            does when they learn a new language - remake their favourite game! I am
+            making a simple remake of the windows version of Chips Challenge using
+            the sprites from the open source clone of the game which can be found
+            here - <a
+            href="http://www.muppetlabs.com/~breadbox/software/tworld/">http://www.muppetlabs.com/~breadbox/software/tworld/</a>
+            . Although this remake is by no means a full remake or compatible with
+            the original, I am posting the source code so that someone else can
+            learn from this experience. Keep in mind that this is my first game in
+            XNA, so the code is a bit sloppy but it works.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/chips-challenge-remake-first-tile-based-game">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/im-famous">
+                I'm Famous!
+            </a>
+            </h1>
+            <p class="meta">
+                2010-10-20
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>ScienceWA has run a story about my work and my supervisor! First
+            published science magazine article!</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/im-famous">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/gimic-simulation-with-dark-matter-particles">
+                GIMIC Simulation with Dark Matter Particles
+            </a>
+            </h1>
+            <p class="meta">
+                2010-09-27
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>This is the GIMIC simulation with dark matter particles included. The
+            volume shows HI gas and how the dark matter moves and is shaped.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/gimic-simulation-with-dark-matter-particles">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/sidebyside-video-player">
+                SideBySide video player
+            </a>
+            </h1>
+            <p class="meta">
+                2010-09-27
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>Often I find the need to play two videos side by side without borders
+            or separate windows. Until now, I have been converting two videos into a
+            single video which takes forever.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/sidebyside-video-player">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/dark-matter">
+                Dark matter
+            </a>
+            </h1>
+            <p class="meta">
+                2010-09-10
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>I have been working on displaying the dark matter from the HDF5 data
+            sets that I have been working on for my astronomy work. Over the last
+            couple of days, I got the loading from HDF5 working and the translation
+            into my local coordinates. The volume is changed from point coordinates
+            to voxel coordinates, then scaled and clamped to the bounding box size.
+            This has to be done because the camera slowly zooms in over the course
+            of the animation and some of the gas / dark matter can leave the
+            simulation.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/dark-matter">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/opengl-openframeworks-terrain-loader-update">
+                OpenGL / openFrameworks Terrain Loader Update
+            </a>
+            </h1>
+            <p class="meta">
+                2010-08-11
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>Just a quick update on what I have been working on. One of the first
+            posts on this blog was a terrain viewer. That project was thrown
+            together very quickly for a weekly assessment, so it wasn't coded very
+            well and was exceptionally bloated for what it did. I have had some
+            spare time, so I started a fresh and commenced building a minimal
+            terrain loader from the ground up. So far, I have terrain loading from
+            file (generated with the tool in previous posts), and displaying a
+            texture mapped, shadowed terrain using glDrawElements. I have
+            specifically not included loading from heightmap in this project because
+            it is easier to load a point struct from a binary file, but heightmap
+            loading could be added in easily and probably will be in the coming days
+            / weeks.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/opengl-openframeworks-terrain-loader-update">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+                <div class="post-teaser">
+        <header>
+            <h1>
+            <!-- //TODODB: Not correct, hardcoded for now -->
+            <a class="post-link" href="../posts/terrain-generation-and-smoothing">
+                Terrain Generation - Diamond Square Algorithm
+            </a>
+            </h1>
+            <p class="meta">
+                2010-08-07
+            </p>
+        </header>
+        <div class="excerpt">
+            <p>I have posted previously about a simple terrain heightmap display
+            program I have made, but never talked about some of the methods of
+            generating and manipulating heightmap based terrain systems.</p>
+            <!-- TODODB: Link not correct, hardcoded for now -->
+            <a class="button" href="../posts/terrain-generation-and-smoothing">
+              Continue reading
+            </a>
+        </div> 
+        </div>
+            </div>
+   
+    <!-- Should conditionally hide this? -->
+    <div class="pagination">
+                        <a href="../posts/page2.html" class="button" >
+          Next Page
+        <i class="fa fa-chevron-right"></i>
+        </a>
+            </div>
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+</body>
+</html>

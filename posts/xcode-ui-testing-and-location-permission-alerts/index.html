@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Xcode UI Testing and Location Permission
+  Alerts | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Xcode UI Testing and Location Permission
+Alerts</h1>
+          <p class="meta">
+            2015-07-17
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>With Xcode 7, Apple has given us a new tool for user
+          interface testing. I'm not going to cover the basics here, but
+          for an great introduction to user interface testing in Xcode,
+          check out this awesome article: <a
+          href="http://masilotti.com/ui-testing-xcode-7/">UI Testing in
+          Xcode 7</a></p>
+          <p>As of beta 3, there is no way to handle native system
+          alerts. This is a pretty big roadblock to actually UI testing
+          apps that support location. Luckily, we can work around this
+          by digging a little bit into the CoreLocation framework.</p>
+          <p>A prerequisite for this is the <a
+          href="http://www.hopperapp.com">Hopper Disassembler</a>, which
+          I can't recommend highly enough. It's a great starting point
+          for poking at and tearing apart system frameworks, libraries
+          and executables.</p>
+          <p>First, lets open the CoreLocation framework with Hopper. As
+          of writing, this framework existed on the file system at:</p>
+          <pre><code>/Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/CoreLocation.framework</code></pre>
+          <p>Let's open the binary within the framework.</p>
+          <figure>
+          <img src="https://i.imgur.com/jqewNDV.png"
+          alt="CoreLocationHopper" />
+          <figcaption aria-hidden="true">CoreLocationHopper</figcaption>
+          </figure>
+          <p>Looking on the left panel under "labels", there are lots of
+          <code>CLLocationManager</code> methods. Scrolling through, we
+          can see a couple of interesting authorization related
+          ones.</p>
+          <p>{% highlight objc %} +[CLLocationManager
+          _authorizationStatus] +[CLLocationManager authorizationStatus]
+          +[CLLocationManager
+          setAuthorizationStatus:forBundleIdentifier:]
+          +[CLLocationManager setAuthorizationStatus:forBundle:] {%
+          endhighlight %}</p>
+          <p>The <code>setAuthorizationStatus:forBundle:</code> method
+          is a private method, but since we are going to be only calling
+          it from a test, we can use it. Note: Do NOT use this in a
+          production app, you will absolutely be rejected from the app
+          store. This is going to let us set the location permission to
+          whatever we want, while supressing the location alert from
+          showing.</p>
+          <p>While we can't call the method directly, we can build a
+          method signature and invoke a custom invocation like this:</p>
+          <p>{% highlight objc %} SEL selector =
+          NSSelectorFromString(@"setAuthorizationStatus:forBundleIdentifier:");
+          NSMethodSignature <em>methodSignature = [CLLocationManager
+          methodSignatureForSelector:selector]; NSInvocation
+          </em>invocation = [NSInvocation
+          invocationWithMethodSignature:methodSignature];
+          invocation.selector = selector;</p>
+          <pre><code>CLAuthorizationStatus status = kCLAuthorizationStatusAuthorizedAlways;
+NSString *identifier = @&quot;com.test.testapp&quot;;
+
+[invocation setArgument:&amp;status atIndex:2];
+[invocation setArgument:&amp;identifier atIndex:3];
+[invocation invokeWithTarget:[CLLocationManager class]];</code></pre>
+          <p>{% endhighlight %}</p>
+          <ul>
+          <li>Notice that the invocation argument indexes start at 2,
+          this is because the first two arguments are implicit
+          (<code>self</code> and <code>_cmd</code>)</li>
+          <li>We used a bundle identifier string rather than loading the
+          bundle, this is because as UI tests run they run inside a
+          different TestRunner bundle.</li>
+          </ul>
+          <p>That's it! Enjoy!</p>
+          <blockquote>
+          <p>Hopefully  fixes all the pain points and remaining
+          concerns of UI testing before the final Xcode 7 release :)</p>
+          </blockquote>
+          <p>Edit: For supressing some other permission dialogs, check
+          out this github issue: <a
+          href="https://github.com/facebook/xctool/issues/276#issuecomment-30074325"
+          class="uri">https://github.com/facebook/xctool/issues/276#issuecomment-30074325</a>
+          (Thanks to Joe Masilotti for the tip!)</p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

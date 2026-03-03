@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Chips Challenge Remake / First Tile Based
+  Game | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Chips Challenge Remake / First Tile Based
+Game</h1>
+          <p class="meta">
+            2010-11-27
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>I am starting to learn XNA at the moment, so I am doing
+          what everyone does when they learn a new language - remake
+          their favourite game! I am making a simple remake of the
+          windows version of Chips Challenge using the sprites from the
+          open source clone of the game which can be found here - <a
+          href="http://www.muppetlabs.com/~breadbox/software/tworld/">http://www.muppetlabs.com/~breadbox/software/tworld/</a>
+          . Although this remake is by no means a full remake or
+          compatible with the original, I am posting the source code so
+          that someone else can learn from this experience. Keep in mind
+          that this is my first game in XNA, so the code is a bit sloppy
+          but it works.</p>
+          <p>Some of the features that I implemented for this tile based
+          game are level saving and loading, an advanced menu system,
+          power ups, a timer class, event handling and game state
+          management. This remake is a simple one layer approach, as
+          opposed to the original two layer version. I am implementing
+          features as I go along and have finished the first level and I
+          am working on the next levels. Progress might go a bit faster
+          after I create a level editor, because hand coding levels is
+          no fun! The core functionality of this game was completed in a
+          day as a programming challenge that I set myself. The extra
+          features / tiles took an extra day of coding (that I put off
+          for far too long). At the moment, the code is quite messy,
+          there are a few ugly hacks (especially the input detection),
+          but I am working on improving it, adding a full input manager
+          and possibly some enemies that move etc.</p>
+          <p>In the future I am looking at uploading more games that I
+          can prototype quickly (for programming practice). So look
+          forward to other classic remakes and newer stuff as well.</p>
+          <p>Here is a screen shot.</p>
+          <p><a
+          href="https://danielbeard.files.wordpress.com/2010/11/chipsgamescreenshot.png"><img
+          src="https://danielbeard.files.wordpress.com/2010/11/chipsgamescreenshot.png?w=300" /></a></p>
+          <p>For people that are thinking of creating a tile based game,
+          I suggest taking the time to make it work with the Tiled Map
+          Editor level format. The Tiled Map Editor is a quick and easy
+          way for creating tiled based levels (square and isometric).
+          The tiles can have attributes associated with them which makes
+          the code to load and save levels much cleaner. Wish I had used
+          Tiled!</p>
+          <p>So check out the source code for this game and give it a
+          bit of a play!</p>
+          <p><a
+          href="http://dl.dropbox.com/u/5387570/ChipsGame.zip">Download
+          Here</a></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>

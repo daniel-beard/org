@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+  	<meta charset="utf-8">
+  	<title>Smoothing Terrain | Daniel Beard</title>
+  	<!-- TODODB: Implement -->
+  	<!-- <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.theme.description }}{% endif %}"> -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- CSS -->
+  	<link rel="stylesheet" href="../../css/main.css">
+  	<link rel="stylesheet" href="../../css/syntax.css">
+
+  	<!-- TODODB: Implement -->
+  	<!--Favicon-->
+  	<!-- <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend: site.baseurl }}" type="image/x-icon"> -->
+
+  	<!-- TODODB: Implement -->
+  	<!-- Canonical -->
+  	<!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
+
+  	<!-- TODODB: Implement? -->
+  	<!-- RSS -->
+  	<!-- <link rel="alternate" type="application/atom+xml" title="{{ site.theme.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /> -->
+
+  	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>  <body>
+    <header class="site-header">
+      <div class="branding">
+              <img class="avatar" src="../../img/avatar.jpg" alt=""/>
+            <h1 class="site-title">
+          <a href="../../posts">Daniel Beard</a>
+        </h1>
+      </div>
+      <nav class="site-nav">
+        <ul>
+                  <li>
+              <a class="page-link" href="../../pages/about.html">
+                About
+              </a>
+            </li>
+                    
+    	  <!-- TODODB: Implement? -->
+      <!-- {% if site.theme.rss %}
+      <li>
+      	<a href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" title="{{ site.theme.str_rss_follow }}">
+      		<i class="fa fa-fw fa-rss"></i>
+      	</a>
+      </li>
+      {% endif %} -->
+
+      <li>
+      	<a href="https://github.com/daniel-beard" title="Follow on GitHub">
+          <i class="fab fa-github"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://www.linkedin.com/in/daniel-beard-17577134/" title="Follow on LinkedIn">
+      		<i class="fab fa-fw fa-linkedin"></i>
+      	</a>
+      </li>
+
+      <li>
+      	<a href="https://stackoverflow.com/users/1144632/danielbeard" title="Follow on Stack Exchange">
+      		<i class="fab fa-fw fa-stack-exchange"></i>
+      	</a>
+      </li>
+        </ul>
+      </nav>
+    </header>    <div class="content">
+      <article >
+        <header style="background-image: url('../../img/')">
+          <h1 class="title">Smoothing Terrain</h1>
+          <p class="meta">
+            2010-08-07
+          </p>
+        </header>
+        <section class="post-content">
+
+          <!-- Deprecation warning -->
+          
+          <p>The terrain generated in the last post was quite bumpy,
+          what if I want smooth rolling hills or something that isn't
+          quite so bumpy. There are two options here - you can either
+          play around with the diamond-square weights and method of
+          generating the terrain or you can smooth the result. The
+          method I have chosen is a mean (average) filter also known as
+          a box filter. The filter works by moving a square (say 3x3)
+          across the terrain values taking the average of the pixels
+          surrounding it to give the center value an averaged
+          result.</p>
+          <p>The box filter size is usually a power of 2 + 1. Some
+          examples are 3x3, 5x5, 9x9, etc. The image below shows how the
+          filter works. The 3x3 square is slid over the terrain
+          averaging it's neighbours. The center pixel is also taken into
+          account.</p>
+          <p><img src="../../img/posts/terrain-filter.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p>Ok, time for some source code. The following code loops
+          over the 2d array of pixels, the inner loop loops from the
+          position minus the filter size to the position plus the filter
+          size in each dimension, this allows us to have an arbitrary
+          filter size without hand coding the weights and positions of
+          each pixel in the filter. The count variable keeps track of
+          how many points contribute to the average and we ignore edge
+          cases meaning that if a point in the filter is outside the
+          array, it gives no contribution to the average.</p>
+          <p><img src="../../img/posts/terrain-code.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p>So the results for running this on the terrain in the
+          previous post are as follows first with no smoothing, then
+          with a box size of 9x9:</p>
+          <p><img src="../../img/posts/terrain-simple.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p><img src="../../img/posts/smoothterrain2.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p>And of course the smoothing can be iterated over many
+          times. Here is the same filter size as above, but repeated 50
+          times.</p>
+          <p><img src="../../img/posts/really-smooth.png"
+          style="display: block; margin: 0 auto" width="300" /></p>
+          <p>Other useful links:</p>
+          <p>Band filtering example : <a
+          href="http://www.lighthouse3d.com/opengl/terrain/index.php3?smoothing">http://www.lighthouse3d.com/opengl/terrain/index.php3?smoothing</a>
+          Filter functions: <a
+          href="http://www.wheatchex.com/projects/filters/">http://www.wheatchex.com/projects/filters/</a></p>
+        </section>
+      </article>
+
+      <!-- TODODB: Do I even want this any more? -->
+      <!-- Post navigation -->
+      <!-- {% if site.theme.post_navigation %}
+      <div id="post-nav">
+          {% if page.previous.url %}
+          <a id="prev-post" href="{{ site.baseurl }}{{ page.previous.url }}">
+            <span class="page-title">{{ page.previous.title }}</span>
+            <span class="nav-label">
+              <i class="fa fa-chevron-left"></i> {{ site.theme.str_prev }}
+            </span>
+          </a>
+          {% endif %}
+          {% if page.next.url %}
+          <a id="next-post" href="{{ site.baseurl }}{{ page.next.url }}">
+            <span class="page-title">{{ page.next.title }}</span>
+            <span class="nav-label">
+              {{ site.theme.str_next }} <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %} -->
+    </div>
+    <footer class="site-footer">
+    	<p class="text">Blag - Powered by Haskell and Pandoc</p>
+    </footer>
+  </body>
+</html>
